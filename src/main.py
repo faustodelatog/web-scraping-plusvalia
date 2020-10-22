@@ -1,4 +1,3 @@
-from os import name
 import pandas as pd
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -10,7 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC
 url = 'https://www.plusvalia.com/terrenos-en-venta-en-quito-pagina-%s.html'
 driver_path = '/Applications/chromedriver'
 
-def read_content(page):
+def read_page_content(page):
     driver = webdriver.Chrome(executable_path=driver_path)
     driver.get(url%(page))
     WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "react-paging")))
@@ -61,27 +60,41 @@ def extract_sales_date(element):
     e = element.find(attrs={'class': 'icon-g-fecha'})
     return "" if e is None else e.parent.text.strip()
 
-j = 0    
-for i in range(1, 20):    
-    content = read_content(i)
-    # content = read_file()
+def parse_item(item):
+    price = extract_price(item)
 
-    soup = BeautifulSoup(content, features="html.parser")
+    info_element = item.find(attrs={'class': 'posting-info'})
+    name = extract_name(info_element)
+    location = extract_location(info_element)
+    area = extract_area(info_element)
+    publisher1 = extract_publisher1(info_element)
+    publisher2 = extract_publisher2(info_element)
+    
+    features_element = item.find(attrs={'class': 'posting-features'})
+    publish_time = extract_publish_time(features_element)
+    finished = extract_finished(features_element)
+    sales_date = extract_sales_date(features_element)
 
+    return [name, location, price, area, publisher1, publisher2, publish_time, finished, sales_date]
+
+def get_items_from_page(page_content):
+    soup = BeautifulSoup(page_content, features="html.parser")
+    page_items = []
     for item in soup.find_all(attrs={'class': 'posting-card'}):
-        j+=1
-        price = extract_price(item)
+        page_items.append(parse_item(item))
+    return page_items
 
-        info_element = item.find(attrs={'class': 'posting-info'})
-        name = extract_name(info_element)
-        location = extract_location(info_element)
-        area = extract_area(info_element)
-        publisher1 = extract_publisher1(info_element)
-        publisher2 = extract_publisher2(info_element)
-        
-        features_element = item.find(attrs={'class': 'posting-features'})
-        publish_time = extract_publish_time(features_element)
-        finished = extract_finished(features_element)
-        sales_date = extract_sales_date(features_element)
+def get_items_from_website():
+    items = []
+    for i in range(1, 2):
+        print('reading page %s'%(i))    
+        page_content = read_page_content(i)
+        items.extend(get_items_from_page(page_content))
+    return items
 
-        print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s"%(j,name, location, price, area, publisher1, publisher2, publish_time, finished, sales_date))
+print('get_items_from_website')
+items = get_items_from_website()
+df = pd.DataFrame(items)
+df.columns = ["nombre", "sector", "precio", "area", "publicador1", "publicador2", "tiempo_publicacion", "finalizado", "fecha_venta"]
+df.to_csv('output/terrenos_quito.csv', index=False, header=True)
+print('%s items written to csv'%(df.shape[0]))
