@@ -49,7 +49,7 @@ def extract_publisher2(element):
     value = e[-1].img['data-src']
     return value[value.rindex("/"):]
     
-def extract_publish_date(element):
+def extract_publish_time(element):
     e = element.find(attrs={'class': 'icon-g-fecha-publicado'})
     return "" if e is None else e.parent.text.strip()
 
@@ -80,13 +80,8 @@ for i in range(1, 20):
         publisher2 = extract_publisher2(info_element)
         
         features_element = item.find(attrs={'class': 'posting-features'})
-        publish_date = extract_publish_date(features_element)
+        publish_time = extract_publish_time(features_element)
         finished = extract_finished(features_element)
         sales_date = extract_sales_date(features_element)
 
-        print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s"%(j,name, location, price, area, publisher1, publisher2, publish_date, finished, sales_date))
-
-
-    
-
-
+        print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s"%(j,name, location, price, area, publisher1, publisher2, publish_time, finished, sales_date))
