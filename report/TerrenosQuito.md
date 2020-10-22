@@ -11,7 +11,7 @@ Me enfocaré únicamente en los terrenos en la ciudad de Quito, no en edificacio
 TerrenosQuito
 
 ## Descrpción del Contenido
-El contenido del set de datos generados contiene un listado de anuncios de terrenos en venta en la ciudad de Quito, Ecuador. Fue obtenido el 22 de octubre de 2019 y contiene 5.250 registros obtenidos de 219 páginas en el sitio web.
+El contenido del set de datos generados contiene un listado de anuncios de terrenos en venta en la ciudad de Quito, Ecuador. Fue obtenido el 22 de octubre de 2019 y contiene 5.453 registros obtenidos de 219 páginas en el sitio web.
 
 ## Representación Gráfica
 <div style="text-align:center">

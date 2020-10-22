@@ -84,17 +84,23 @@ def get_items_from_page(page_content):
         page_items.append(parse_item(item))
     return page_items
 
-def get_items_from_website():
-    items = []
+def extract_items(filename):
     for i in range(1, 220):
-        print('reading page %s'%(i))    
+        print('extracting items from page %s'%(i))    
         page_content = read_page_content(i)
-        items.extend(get_items_from_page(page_content))
-    return items
+        page_items = get_items_from_page(page_content)
+        append_items_to_csv(page_items, filename)
 
-print('get_items_from_website')
-items = get_items_from_website()
-df = pd.DataFrame(items)
-df.columns = ["nombre", "sector", "precio", "area", "publicador1", "publicador2", "tiempo_publicacion", "finalizado", "fecha_venta"]
-df.to_csv('output/terrenos_quito.csv', index=False, header=True)
-print('%s items written to csv'%(df.shape[0]))
+def append_items_to_csv(items, filename):
+    df = pd.DataFrame(items)
+    df.to_csv(filename, index=False, header=False, mode='a')    
+    print('%s items appended to csv'%(df.shape[0]))
+
+def create_csv_file_with_headers():
+    output_filename = 'output/terrenos_quito.csv'
+    df = pd.DataFrame([["nombre", "sector", "precio", "area", "publicador1", "publicador2", "tiempo_publicacion", "finalizado", "fecha_venta"]])
+    df.to_csv(output_filename, index=False, header=False)
+    return output_filename
+
+output_filename = create_csv_file_with_headers()
+extract_items(output_filename)
