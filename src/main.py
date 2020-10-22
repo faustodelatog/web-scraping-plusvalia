@@ -86,7 +86,7 @@ def get_items_from_page(page_content):
 
 def get_items_from_website():
     items = []
-    for i in range(1, 2):
+    for i in range(1, 220):
         print('reading page %s'%(i))    
         page_content = read_page_content(i)
         items.extend(get_items_from_page(page_content))
