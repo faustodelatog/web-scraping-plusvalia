@@ -13,3 +13,8 @@ El autor de este trabajo soy yo: Fausto De La Torre.
 
 ## Recursos
 1. Lawson, R. (2015). _Web Scraping with Python_. Packt Publishing Ltd. Chapter 2. Scraping the Data.
+
+## DOI
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4119168.svg)](https://doi.org/10.5281/zenodo.4119168)
+
+[10.5281/zenodo.4119168](https://doi.org/10.5281/zenodo.4119168)
